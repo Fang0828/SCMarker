@@ -15,7 +15,7 @@ Usage
 You can install SCMarker from GitHub
 ```
 library(devtools)
-install_github(fang0828/SCMarker)
+install_github("fang0828/SCMarker")
 ```
 Alternatively, you can download from GitHub
 ```
