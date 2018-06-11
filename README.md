@@ -12,12 +12,20 @@ The three main functions for this package are `ModalFilter()`, `GeneFilter()` an
 
 Usage
 ----------------------
+You can install SCMarker from GitHub
 ```
-Download SCMarker_1.0.tar.gz
+library(devtools)
+install_github(fang0828/SCMarker)
+```
+Alternatively, you can download from GitHub
+```
+#https://github.com/Fang0828/SCMarker/releases
+#Download SCMarker_1.0.tar.gz
+install.packages("SCMarker_1.0.tar.gz",repos=NULL,type="source")
 ```
 
 ```R
-install.packages("SCMarker_1.0.tar.gz",repos=NULL,type="source")
+library(SCMarker)
 data(melanoma)
 melanoma1=as.matrix(melanoma[,2:dim(melanoma)[2]])
 row.names(melanoma1)=melanoma[,1]
