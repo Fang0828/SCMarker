@@ -5,7 +5,7 @@
 Marker selection
 }
 \description{
-Selecting markers if gene pairs are mutual nearest coexpressed in a number of cells.
+Selecting markers if gene pairs are mutual nearest coexpressed or exclusivity in a number of cells.
 
 }
 \usage{
@@ -20,7 +20,8 @@ The list oject from function GeneFilter
 The maximum number that how many nearest neighbors would be considered.
 }
   \item{MNNIndex}{
-The minimum number which is the coexpressed cells for each gene pairs
+The minimum number which is the coexpressed/mutually exclusivie cells for each gene pairs
+
 }
 }
 \details{
@@ -32,7 +33,6 @@ The minimum number which is the coexpressed cells for each gene pairs
 \res{cellSumm}{A data frame including cell ID and corresponding number of expressed genes}
 \res{binadata}{The binary expression matrix corresponding to raw data}
 \res{marker}{The filnal marker selected}
-
 }
 \references{
 %% ~put references to the literature/web site here ~
@@ -69,13 +69,16 @@ function (filterres, MNN, MNNIndex)
     geneindex = rowSums(binadata)
     HamD = tcrossprod(binadata)
     diag(HamD) = 0
-    marker = getMNN(HamD = HamD, genename = genename, MNN = MNN, 
+    HamDD = tcrossprod((1 - binadata), binadata)
+    MNNmarker = getMNN(HamD = HamD, genename = genename, MNN = MNN, 
         MNNIndex = MNNIndex)
-    filterres$marker = marker
+    MENmarker = getMEN(HamD = HamDD, genename = genename, MNN = MNN, 
+        MNNIndex = MNNIndex)
+    filterres$marker = union(MNNmarker, MENmarker)
     return(filterres)
   }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
+\keyword{ ~kwd1 }% use one of  RShowDoc("KEYWORDS")
 \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

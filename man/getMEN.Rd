@@ -1,22 +1,22 @@
-\name{getMNN}
-\alias{getMNN}
+\name{getMEN}
+\alias{getMEN}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Mutual nearest coexpressed gene pairs
+Mutually nearest exclusive gene pairs
 }
 \description{
-Idenitify mutual nearest expressed gene pairs based on binary expression data
+%%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-getMNN(HamD, genename, MNN, MNNIndex)
+getMEN(HamDD, genename, MNN, MNNIndex)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{HamD}{
-A matrix from multiplicate of binary data tcrossprod(binadata) and diag are zero.
+  \item{HamDD}{
+A matrix from multiplicate of binary data tcrossprod((1 - binadata), binadata).
 }
   \item{genename}{
-The rownames and colnames of matrix HamD
+The rownames and colnames of matrix HamDD
 }
   \item{MNN}{
 The maximum number that how many nearest neighbors would be considered.
@@ -33,7 +33,7 @@ The minimum number which is the coexpressed cells for each gene pairs
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
 %%  \item{comp2 }{Description of 'comp2'}
-A list including the MNN nearest neighbors which co-expressed in more than MNNindex samples.
+A list including the MNN nearest neighbors which mutually exclusive in more than MNNindex samples.
 }
 \references{
 %% ~put references to the literature/web site here ~
@@ -49,7 +49,6 @@ A list including the MNN nearest neighbors which co-expressed in more than MNNin
 
 \seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
-getMarker
 }
 \examples{
 ##---- Should be DIRECTLY executable !! ----
@@ -63,15 +62,14 @@ filterres=GeneFilter(filterres=filterres,maxexp=dim(filterres$data)[1]*0.8)
 data = filterres$data
 binadata = filterres$binadata
 genename = row.names(binadata)
-HamD = tcrossprod(binadata)
-diag(HamD) = 0
-marker = getMNN(HamD = HamD, genename = genename, 
+HamDD = tcrossprod((1 - binadata), binadata)
+marker = getMEN(HamDD = HamDD, genename = genename, 
         MNN = 200, MNNIndex = 20)
 
 ## The function is currently defined as
-function (HamD, genename, MNN, MNNIndex) 
+function (HamDD, genename, MNN, MNNIndex) 
 {
-    MNNgene = lapply(1:dim(HamD)[1], RankGene, MNN = MNN, HamD = HamD, 
+    MNNgene = lapply(1:dim(HamDD)[1], RankGene, MNN = MNN, HamD = HamDD, 
         geneName = genename, MNNIndex = MNNIndex)
     genePair = unique(as.character(do.call(cbind, lapply(1:length(MNNgene), 
         MNNpair, MNNgene = MNNgene, geneName = genename))))
