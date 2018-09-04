@@ -21,7 +21,7 @@ install.packages("SCMarker_2.0.tar.gz",repos=NULL,type="source")
 data(melanoma)
 melanoma1=as.matrix(melanoma[,2:dim(melanoma)[2]])
 row.names(melanoma1)=melanoma[,1]
-res=ModalFilter(data=melanoma1,geneK=10,cellK=10,width=2)
+res=ModalFilter(data=melanoma1,geneK=10,cellK=10,width=2)# default width = 1 for UMI data, width =2 for TPM data.
 res=GeneFilter(obj=res)
 res=getMarker(obj=res,MNN=300,MNNIndex=30)
 library(Seurat)
