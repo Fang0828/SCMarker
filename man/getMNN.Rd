@@ -52,16 +52,14 @@ A list including the MNN nearest neighbors which co-expressed in more than MNNin
 getMarker
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 data(melanoma)
 melanoma1=as.matrix(melanoma[,2:dim(melanoma)[2]])
 row.names(melanoma1)=melanoma[,1]
-filterres=ModalFilter(data=melanoma1,geneK=10,cellK=10,width=2,cutoff=2)
-filterres=GeneFilter(filterres=filterres,maxexp=dim(filterres$data)[1]*0.8)
+res=ModalFilter(data=melanoma1,geneK=10,cellK=10,width=2,cutoff=2)
+res=GeneFilter(obj=res)
 data = filterres$data
-binadata = filterres$binadata
+data = res$newdata
+binadata = res$binadata
 genename = row.names(binadata)
 HamD = tcrossprod(binadata)
 diag(HamD) = 0
