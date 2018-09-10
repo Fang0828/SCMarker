@@ -14,6 +14,8 @@ Usage
 ----------------------
 ```
 Download SCMarker_2.0.tar.gz
+or install through GitHub
+install_github("KChen-lab/SCMarker")
 ```
 
 ```R
