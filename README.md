@@ -10,13 +10,20 @@ The three main functions for this package are `ModalFilter()`, `GeneFilter()` an
 
 
 
+Installation
+----------------------
+Download SCMarker_2.0.tar.gz
+```R
+install.packages("SCMarker_2.0.tar.gz",repos=NULL,type="source")
+```
+or install through GitHub
+```R
+library(devtools)
+install_github("Fang0828/SCMarker")
+```
+
 Usage
 ----------------------
-```
-Download SCMarker_2.0.tar.gz
-or install through GitHub
-install_github("KChen-lab/SCMarker")
-```
 
 ```R
 install.packages("SCMarker_2.0.tar.gz",repos=NULL,type="source")
@@ -26,12 +33,4 @@ row.names(melanoma1)=melanoma[,1]
 res=ModalFilter(data=melanoma1,geneK=10,cellK=10,width=2)# default width = 1 for UMI data, width =2 for TPM data.
 res=GeneFilter(obj=res)
 res=getMarker(obj=res,MNN=300,MNNIndex=30)
-library(Seurat)
-library(SC3)
-library(dbscan)
-library(dplyr)
-res=SCcluster(obj=res)
-res=getClusterGene(obj=res,method="Seurat")
-HeatmapCluster(obj=res,top=10)
-HeatmapCell(obj=res,5)
 ```
