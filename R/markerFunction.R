@@ -96,10 +96,10 @@ Bina<-function(data,cutoff=2){
 	data[data>=cutoff]=1
 	return(data)
 }
-RankGene<-function(k,MNN,HamD,geneName,MNNIndex){
-	x=HamD[k,]
+RankGene<-function(kk,k,HamD,geneName,n){
+	x=HamD[kk,]
 	xrank=rank(-x)
-	MNNgene=geneName[xrank<=MNN&x>MNNIndex]
+	MNNgene=geneName[xrank<=k&x>n]
 	return(MNNgene)
 }
 MNNpair<-function(k,MNNgene,geneName){
@@ -116,17 +116,17 @@ MNNpair<-function(k,MNNgene,geneName){
 		}
 	}
 }
-getMNN<-function(HamD,genename,MNN,MNNIndex){
-	MNNgene=lapply(1:dim(HamD)[1],RankGene,MNN=MNN,HamD=HamD,geneName=genename,MNNIndex=MNNIndex)
+getMNN<-function(HamD,genename,k,n){
+	MNNgene=lapply(1:dim(HamD)[1],RankGene,k=k,HamD=HamD,geneName=genename,n=n)
 	genePair=unique(as.character(do.call(cbind,lapply(1:length(MNNgene),MNNpair,MNNgene=MNNgene,geneName=genename))))
 	return(genePair)
 }
-getMEN<-function(HamDD,genename,MNN,MNNIndex){
-	MNNgene=lapply(1:dim(HamDD)[1],RankGene,MNN=MNN,HamD=HamDD,geneName=genename,MNNIndex=MNNIndex)
+getMEN<-function(HamDD,genename,k,n){
+	MNNgene=lapply(1:dim(HamDD)[1],RankGene,k=k,HamD=HamDD,geneName=genename,n=n)
 	genePair=unique(as.character(do.call(cbind,lapply(1:length(MNNgene),MNNpair,MNNgene=MNNgene,geneName=genename))))
 	return(genePair)
 }
-getMarker<-function(obj,MNN,MNNIndex){
+getMarker<-function(obj,k=300,n=30){
 	data=obj$newdata
 	binadata=obj$binadata
 	genename=row.names(binadata)
@@ -134,8 +134,8 @@ getMarker<-function(obj,MNN,MNNIndex){
 	HamD=tcrossprod(binadata)
 	diag(HamD)=0
 	HamDD=tcrossprod((1-binadata),binadata)
-	MNNmarker=getMNN(HamD=HamD,genename=genename,MNN=MNN,MNNIndex=MNNIndex)
-	MENmarker=getMEN(HamD=HamDD,genename=genename,MNN=MNN,MNNIndex=MNNIndex)
+	MNNmarker=getMNN(HamD=HamD,genename=genename,k=k,n=n)
+	MENmarker=getMEN(HamD=HamDD,genename=genename,k=k,n=n)
 	obj$marker=union(MNNmarker,MENmarker)
 	return(obj)
 }
@@ -151,7 +151,7 @@ SCcluster<-function(obj){
 	pbmc <- FindVariableGenes(object = pbmc, mean.function = ExpMean, dispersion.function = LogVMR,
 	                          x.low.cutoff = 0.0125, x.high.cutoff = 3, y.cutoff = 0.5)
 	pbmc <- ScaleData(object = pbmc)
-	pbmc <- RunPCA(object = pbmc, pc.genes = marker, do.print = TRUE, pcs.print = 1:5, 
+	pbmc <- RunPCA(object = pbmc, pc.genes = marker, do.print = TRUE, pcs.print = 1:5,
 	                genes.print = 5)
 	pbmc <- FindClusters(object = pbmc, reduction.type = "pca", dims.use = 1:8,
 	                      resolution = 0.6, print.output = 0, save.SNN = TRUE,force.recalc=TRUE)
