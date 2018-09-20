@@ -19,7 +19,7 @@ install.packages("SCMarker_2.0.tar.gz",repos=NULL,type="source")
 or install through GitHub
 ```R
 library(devtools)
-install_github("KChen-lab/SCMarker")
+install_github("Fang0828/SCMarker")
 ```
 
 
