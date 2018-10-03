@@ -3,12 +3,12 @@
 # Author: FWang9
 ###############################################################################
 
-library(SingleCellExperiment)
-library(SC3)
-library(scater)
-library(dplyr)
-library(pheatmap)
-library(Seurat)
+#library(SingleCellExperiment)
+#library(SC3)
+#library(scater)
+#library(dplyr)
+#library(pheatmap)
+#library(Seurat)
 
 ####preprocess data
 ##count expression cell or gene
