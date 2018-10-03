@@ -143,6 +143,10 @@ getMarker<-function(obj,k=300,n=30){
 ######cluster
 SCcluster<-function(obj){
 	data=obj$rawdata
+	gene=row.names(data)
+	gene=unique(gene)
+	index=match(gene,row.names(data))
+	data=data[index,]
 	marker=obj$marker
 	pbmc <- CreateSeuratObject(raw.data = data, min.cells = 3, min.genes = 200,
 	                           project = "project")
@@ -155,7 +159,7 @@ SCcluster<-function(obj){
 	                genes.print = 5)
 	pbmc <- FindClusters(object = pbmc, reduction.type = "pca", dims.use = 1:8,
 	                      resolution = 0.6, print.output = 0, save.SNN = TRUE,force.recalc=TRUE)
-	pbmc <- RunTSNE(object = pbmc, dims.use = 1:15, do.fast = TRUE)
+	pbmc <- RunTSNE(object = pbmc, dims.use = 1:15, do.fast = TRUE,check_duplicates = FALSE)
 	TSNE=pbmc@dr$tsne@cell.embeddings
 	seuratCluster=pbmc@ident
 	dbscanCluster=dbscan(TSNE,eps=1.2,minPts=15)$cluster
